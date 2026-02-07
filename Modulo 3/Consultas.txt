@@ -1,0 +1,13 @@
+-- base de datos on line para practicar
+-- https://www.sql-practice.com/
+
+SELECT upper(first_name), 
+		LOWER(last_name), 
+--        city, 
+        LEN(city) AS "Cant. Caracteres"
+FROM patients 
+where gender = 'F' 
+and allergies is null 
+and height < 160 
+order by first_name asc
+-- limit 10
