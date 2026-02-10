@@ -11,3 +11,63 @@ and allergies is null
 and height < 160 
 order by first_name asc
 -- limit 10
+
+-- Ejercicio 1: buscar como contar las filas que devuelve la consulta
+-- Ejercicio 2: Buscar como enumerar filas
+-- Ejercicio 3: Mostrar pacientes femeninos con alergia a la penicilina nacidos en el año 90 al 99
+-- Ejercicio 4: Mostrar pacientes femeninos con alergia a la penicilina nacidos en el año 90 al 99 
+-- y que sean de Toronto y Hamilton
+-- Ejercicio 5: Mostrar los datos del paciente con ciudad, apellido, nombre,f. nacimiento y alergia
+
+SELECT ROW_NUMBER() OVER (ORDER BY city, lower(last_name) desc) AS fila, 
+	city, last_name, first_name, gender, birth_date, allergies
+-- * -- count(*) 
+FROM patients 
+where gender = 'F'
+and allergies = 'Penicillin'
+-- and birth_date < '2000-01-01' and birth_date > '1989-12-31'
+-- and birth_date BETWEEN '1990-01-01' AND '1999-12-31'
+-- and year(birth_date) >= 1990 and year(birth_date) < 2000
+and year(birth_date) BETWEEN 1990 AND 1999
+-- And (LOWER(city) = 'toronto' or LOWER(city) = 'hamilton' )
+AND lower(city) IN ('toronto', 'hamilton')
+order by city, lower(last_name) desc;
+
+
+
+
+-- Inner join con 2 tablas
+
+SELECT pa.patient_id as Id, pa.first_name Nombre, 
+pa.last_name "Primer Apellido", pa.gender, 
+pa.birth_date, pa.city, 
+pa.province_id,
+pr.province_name, COALESCE( pa.allergies, 'Sin Alergias') as Alergias
+FROM patients pa 
+	inner JOIN province_names pr ON pr.province_id = pa.province_id
+
+
+
+
+-- Ejercicio 6: Mostrar las atenciones y los datos de los pacientes en orden de llegada y diagnostico en mayúscula
+-- Ejercicio 7: Mostrar las atenciones y los datos de los pacientes en orden de llegada y diagnostico en mayúscula 
+y el doctor que atendió. Mostrar las columnas en español
+-- Ejercicio 8: investigar y usar como dar formato nacional a la fecha (d-m-aaaa)
+
+select concat(p.first_name, ' ', p.last_name)  "Nombre de Paciente", 
+        p.gender Género, 
+	strftime('%d-%m-%Y', ad.admission_date) "Fecha Admision",
+	strftime('%d-%m-%Y', ad.admission_date) "Fecha Alta",
+        upper(a.diagnosis) "Diagnóstico", 
+        (d.first_name || ' ' || d.last_name) "Nombre Doctor"
+
+from admissions a
+	inner join patients p ON p.patient_id = a.patient_id
+    inner join doctors d on d.doctor_id = a.attending_doctor_id
+order by admission_date
+limit 10
+
+
+
+
+
