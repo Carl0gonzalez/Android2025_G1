@@ -1,0 +1,47 @@
+-- buscar datos por patrones 
+SELECT first_name as Nombre, last_name "Primer apellido",
+first_name || ' ' || last_name,
+concat(pr.province_id, ' ', pr.province_name)
+FROM patients pa
+inner join province_names pr on pr.province_id = pa.province_id
+where lower(first_name) like '%ina%'
+and upper(last_name) like 'CO%'
+
+
+-- contar y agrupar pacientes y sus ciudades
+-- Cantidad de pacientes que vienen de las distintas ciudades 
+select city Ciudad, count(*) as "Cantidad de Pacientes"
+from patients pa 
+	inner join province_names pr on pr.province_id = pa.province_id
+where pa.province_id = 'ON'
+group by city
+order by 2 desc
+limit 15
+
+-- otra información acerca de la ubicación del hospital
+select city Ciudad, pa.province_id, pr.province_name, count(*) as "Cantidad de Pacientes"
+from patients pa 
+	inner join province_names pr on pr.province_id = pa.province_id
+--where pa.province_id <> 'ON'
+group by city
+order by 4 desc
+limit 10
+
+
+-- Ejercicio 12: Contar la cantidad de pacientes con alérgicos, ordenar alfabeticamente
+select allergies as Alergia, count(*) as "Q alergicos"
+from patients
+where allergies is not null
+group by allergies
+order by allergies
+
+
+-- Ejercicio 13: top 10 de alergias que tienen los pacientes de la ciudad de Hamilton
+
+select allergies as Alergia, count(*) as 'Q Alergia'
+from patients
+where allergies is not null
+and city = 'Hamilton'
+group by allergies
+order by count(*) desc
+limit 10
