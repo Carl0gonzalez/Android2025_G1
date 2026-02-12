@@ -35,3 +35,11 @@ ALTER TABLE categoria AUTO_INCREMENT = 1;
 
 truncate table producto; -- evitar por estar con fk
 truncate table categoria;
+
+
+set autocommit = 0;
+select * from categoria;
+DELETE FROM categoria; 
+commit;
+rollback;
+
