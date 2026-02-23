@@ -13,7 +13,7 @@ CREATE TABLE Cliente (
     id_cliente 		INT 		AUTO_INCREMENT PRIMARY KEY,
     nombre 		VARCHAR(100) 	NOT NULL, -- VARCHAR = STRING
     apellido 		VARCHAR(100) 	NOT NULL,
-    teléfono 		VARCHAR(15)	NULL,
+    telefono 		VARCHAR(15)	NULL,
     correo 		VARCHAR(150) 	UNIQUE, -- EVITA QUE SE REPITAN CORREO
     direccion 		VARCHAR(200)	NULL,
     fecha_registro 	DATETIME 	DEFAULT CURRENT_TIMESTAMP
@@ -47,7 +47,7 @@ CREATE TABLE Producto (
     descripcion VARCHAR(200),
     precio INT NOT NULL CHECK (precio > 0),
     stock INT NOT NULL CHECK (stock >= 0),
-    id categoria INT NOT NULL,
+    id_categoria INT NOT NULL,
     id_marca INT NOT NULL,
     FOREIGN KEY (id_categoria) REFERENCES Categoria(id_categoria),
     FOREIGN KEY (id_marca) REFERENCES Marca(id_marca)
